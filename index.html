@@ -140,7 +140,7 @@
 
         <div class="game-grid" id="gameGrid">
 
-            <a class="game-card" href="geometry-dash.html" data-name="Geometry Dash">
+            <a class="game-card" href="geometrydash.html" data-name="Geometry Dash">
                 <div class="game-icon">🟨</div>
                 <div class="game-info">
                     <h2>Geometry Dash</h2>
