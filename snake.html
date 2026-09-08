@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake</title>
+
+    <style>
+        body {
+            background: #222;
+            color: white;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        canvas {
+            background: black;
+            border: 3px solid white;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Snake Game</h1>
+<p>Puntos: <span id="puntos">0</span></p>
+
+<canvas id="juego" width="400" height="400"></canvas>
+<br>
+<button onclick="reiniciar()">Reiniciar</button>
+
+<script>
+
+var canvas = document.getElementById("juego");
+var ctx = canvas.getContext("2d");
+
+var snake = [];
+var comida = {};
+var dir = "right";
+var puntos = 0;
+var jugando = true;
+
+function reiniciar() {
+
+    snake = [
+        {x: 200, y: 200},
+        {x: 180, y: 200},
+        {x: 160, y: 200}
+    ];
+
+    dir = "right";
+    puntos = 0;
+    jugando = true;
+
+document.getElementById("puntos").innerText = puntos;
+
+    comidaNueva();
+}
+
+function comidaNueva() {
+
+    comida.x = Math.floor(Math.random() * 20) * 20;
+    comida.y = Math.floor(Math.random() * 20) * 20;
+}
+
+document.addEventListener("keydown", function(e) {
+
+    if (e.key == "ArrowUp" && dir != "down")
+        dir = "up";
+
+    if (e.key == "ArrowDown" && dir != "up")
+        dir = "down";
+
+    if (e.key == "ArrowLeft" && dir != "right")
+        dir = "left";
+
+    if (e.key == "ArrowRight" && dir != "left")
+        dir = "right";
+});
+
+function jugar() {
+
+    if (!jugando)
+        return;
+
+    var x = snake[0].x;
+    var y = snake[0].y;
+
+    if (dir == "up") y -= 20;
+    if (dir == "down") y += 20;
+    if (dir == "left") x -= 20;
+    if (dir == "right") x += 20;
+
+    if (x < 0 || x >= 400 || y < 0 || y >= 400) {
+        jugando = false;
+        alert("Perdiste");
+        return;
+    }
+
+    for (var i = 0; i < snake.length; i++) {
+        if (x == snake[i].x && y == snake[i].y) {
+            jugando = false;
+            alert("Perdiste");
+            return;
+        }
+    }
+
+    snake.unshift({x: x, y: y});
+
+    if (x == comida.x && y == comida.y) {
+        puntos++;
+document.getElementById("puntos").innerText = puntos;
+         comidaNueva();
+     } else {
+         snake.pop();
+     }
+
+     ctx.clearRect(0, 0, 400, 400);
+
+     ctx.fillStyle = "red";
+     ctx.fillRect(comida.x, comida.y, 20, 20);
+
+     ctx.fillStyle = "lime";
+
+    for (var i = 0; i < snake.length; i++) {
+         ctx.fillRect(
+             snake[i].x,
+             snake[i].y,
+             18,
+             18
+         );
+    }
+}
+
+reiniciar();
+
+setInterval(jugar, 120);
+
+</script>
+
+</body>
+</html>
